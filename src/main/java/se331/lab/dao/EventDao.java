@@ -1,0 +1,11 @@
+package se331.lab.dao;
+
+import org.springframework.data.domain.Page;
+import se331.lab.entity.Event;
+
+public interface EventDao {
+    Integer getEventSize();
+    Page<Event> getEvents(Integer page, Integer perPage);
+    Event getEvent(Long id);
+    Event save(Event event);
+}
