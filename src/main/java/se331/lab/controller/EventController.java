@@ -2,6 +2,7 @@ package se331.lab.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,13 +19,38 @@ public class EventController {
     @GetMapping("/events")
     public ResponseEntity<?> getEventLists(
             @RequestParam(value = "_limit", required = false, defaultValue = "10") Integer perPage,
-            @RequestParam(value = "_page", required = false, defaultValue = "1") Integer page) {
+            @RequestParam(value = "_page", required = false, defaultValue = "1") Integer page,
+            @RequestParam(value = "title", required = false) String title,
+            @RequestParam(value = "description", required = false) String description) {
+        // ตรวจสอบค่าดีฟอลต์อีกครั้งเพื่อความชัวร์
+        perPage = (perPage == null || perPage <= 0) ? 10 : perPage;
+        page = (page == null || page <= 0) ? 1 : page;
 
-        Page<Event> pageOutput = eventService.getEvents(page, perPage); // 👈 สลับลำดับ
+
+        Page<Event> pageOutput = eventService.getEventsAnd(
+                title, description,
+                PageRequest.of(page - 1, perPage)
+        );
+
+        if (title == null || title.isBlank()) {
+            // ถ้าไม่ได้ส่ง title → ดึงทั้งหมด
+            pageOutput = eventService.getEvents(page, perPage);
+        } else {
+            // ถ้าส่ง title → ดึงเฉพาะที่ match
+            pageOutput = eventService.getEvents(
+                    title,
+                    PageRequest.of(page - 1, perPage)
+            );
+        }
+
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("x-total-count", String.valueOf(pageOutput.getTotalElements()));
 
-        return new ResponseEntity<>(pageOutput.getContent(), responseHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(
+                pageOutput.getContent(),
+                responseHeaders,
+                HttpStatus.OK
+        );
     }
 
     @GetMapping("/events/{id}")

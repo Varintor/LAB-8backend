@@ -12,10 +12,10 @@ import se331.lab.service.OrganizerService;
 public class OrganizerController {
     final OrganizerService organizerService;
 
-    @GetMapping("organizers")
+    @GetMapping("/organizers")
     public ResponseEntity<?> getOrganizers(
-            @RequestParam(value = "_limit", required = false) Integer perPage,
-            @RequestParam(value = "_page", required = false) Integer page) {
+            @RequestParam(value = "_limit", required = false, defaultValue = "10") Integer perPage,
+            @RequestParam(value = "_page", required = false, defaultValue = "1") Integer page) {
 
         Page<Organizer> result = organizerService.getOrganizers(perPage, page);
 
@@ -24,9 +24,8 @@ public class OrganizerController {
                 .body(result.getContent());
     }
 
-
     // ดึง organizer ตาม id
-    @GetMapping("organizers/{id}")
+    @GetMapping("/organizers/{id}")
     public ResponseEntity<?> getOrganizer(@PathVariable("id") Long id) {
         Organizer organizer = organizerService.getOrganizer(id);
         if (organizer != null) {

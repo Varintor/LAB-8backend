@@ -1,9 +1,6 @@
 package se331.lab.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 @Entity
 @Data
@@ -22,5 +19,8 @@ public class Event {
     String date;
     String time;
     Boolean petsAllowed;
-    String organizer;
+    @ManyToOne
+    @JoinColumn(name = "organizer_id") // foreign key ไปที่ organizer
+    Organizer organizer;
+
 }
