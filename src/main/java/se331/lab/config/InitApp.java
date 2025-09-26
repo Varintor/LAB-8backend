@@ -1,5 +1,6 @@
 package se331.lab.config;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
@@ -13,38 +14,30 @@ import se331.lab.repository.OrganizerRepository;
 @RequiredArgsConstructor
 public class InitApp implements ApplicationListener<ApplicationReadyEvent> {
     final EventRepository eventRepository;
-    final OrganizerRepository organizerRepository;   // ✅ เพิ่มเข้ามา
+    final OrganizerRepository organizerRepository;
 
     @Override
+    @Transactional
     public void onApplicationEvent(ApplicationReadyEvent event) {
-        // ✅ สร้าง organizer ก่อน
-        Organizer camt = organizerRepository.save(
-                Organizer.builder()
-                        .organizerName("CAMT")
-                        .address("CMU Campus")
-                        .build()
-        );
-        Organizer cmu = organizerRepository.save(
-                Organizer.builder()
-                        .organizerName("CMU")
-                        .address("Chiang Mai")
-                        .build()
-        );
-        Organizer chiangMai = organizerRepository.save(
-                Organizer.builder()
-                        .organizerName("Chiang Mai")
-                        .address("Ping River")
-                        .build()
-        );
-        Organizer chiangMaiMunicipality = organizerRepository.save(
-                Organizer.builder()
-                        .organizerName("Chiang Mai Municipality")
-                        .address("City Hall")
-                        .build()
-        );
+        Organizer org1, org2, org3;
 
-        // ✅ Event ที่โยงกับ Organizer
-        eventRepository.save(Event.builder()
+        // ✅ สร้าง Organizer
+        org1 = organizerRepository.save(Organizer.builder()
+                .name("CAMT")
+                .build());
+
+        org2 = organizerRepository.save(Organizer.builder()
+                .name("CMU")
+                .build());
+
+        org3 = organizerRepository.save(Organizer.builder()
+                .name("ChiangMai")
+                .build());
+
+        Event tempEvent;
+
+        // ✅ Event 1
+        tempEvent = Event.builder()
                 .category("Academic")
                 .title("Midterm Exam")
                 .description("A time for taking the exam")
@@ -52,10 +45,13 @@ public class InitApp implements ApplicationListener<ApplicationReadyEvent> {
                 .date("3rd Sept")
                 .time("3.00-4.00 pm.")
                 .petsAllowed(false)
-                .organizer(camt)   // ใช้ entity ไม่ใช่ string
-                .build());
+                .build();
+        tempEvent.setOrganizer(org1);
+        org1.getOwnEvents().add(tempEvent);
+        eventRepository.save(tempEvent);
 
-        eventRepository.save(Event.builder()
+        // ✅ Event 2
+        tempEvent = Event.builder()
                 .category("Academic")
                 .title("Commencement Day")
                 .description("A time for celebration")
@@ -63,10 +59,13 @@ public class InitApp implements ApplicationListener<ApplicationReadyEvent> {
                 .date("21th Jan")
                 .time("8.00am-4.00 pm.")
                 .petsAllowed(false)
-                .organizer(cmu)
-                .build());
+                .build();
+        tempEvent.setOrganizer(org1);
+        org1.getOwnEvents().add(tempEvent);
+        eventRepository.save(tempEvent);
 
-        eventRepository.save(Event.builder()
+        // ✅ Event 3
+        tempEvent = Event.builder()
                 .category("Cultural")
                 .title("Loy Krathong")
                 .description("A time for Krathong")
@@ -74,10 +73,13 @@ public class InitApp implements ApplicationListener<ApplicationReadyEvent> {
                 .date("21th Nov")
                 .time("8.00-10.00 pm.")
                 .petsAllowed(false)
-                .organizer(chiangMai)
-                .build());
+                .build();
+        tempEvent.setOrganizer(org2);
+        org2.getOwnEvents().add(tempEvent);
+        eventRepository.save(tempEvent);
 
-        eventRepository.save(Event.builder()
+        // ✅ Event 4
+        tempEvent = Event.builder()
                 .category("Cultural")
                 .title("Songkran")
                 .description("Let's Play Water")
@@ -85,7 +87,9 @@ public class InitApp implements ApplicationListener<ApplicationReadyEvent> {
                 .date("13th April")
                 .time("10.00am - 6.00 pm.")
                 .petsAllowed(true)
-                .organizer(chiangMaiMunicipality)
-                .build());
+                .build();
+        tempEvent.setOrganizer(org3);
+        org3.getOwnEvents().add(tempEvent);
+        eventRepository.save(tempEvent);
     }
 }

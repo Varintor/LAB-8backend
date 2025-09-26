@@ -38,14 +38,14 @@ public class EventDaoImpl implements EventDao {
     @Override
     public Page<Event> getEvents(String title, Pageable page) {
         return eventRepository
-                .findByTitleIgnoreCaseContainingOrDescriptionIgnoreCaseContainingOrOrganizer_OrganizerNameIgnoreCaseContaining(
+                .findByTitleIgnoreCaseContainingOrDescriptionIgnoreCaseContainingOrOrganizer_NameIgnoreCaseContaining(
                         title, title, title, page
                 );
     }
 
     @Override
     public Page<Event> getEventsAnd(String title, String description, Pageable page) {
-        return eventRepository.findByTitleIgnoreCaseContainingOrDescriptionIgnoreCaseContainingOrOrganizer_OrganizerNameIgnoreCaseContaining(
+        return eventRepository.findByTitleIgnoreCaseContainingOrDescriptionIgnoreCaseContainingOrOrganizer_NameIgnoreCaseContaining(
                 title, description, title, page);
     }
 }

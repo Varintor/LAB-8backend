@@ -15,33 +15,33 @@ public class OrganizerDaoImpl implements OrganizerDao {
         organizerList = List.of(
                 Organizer.builder()
                         .id(123L)
-                        .organizerName("Kat Laydee")
-                        .address("Meow Town")
+                        .name("Kat Laydee")
+                      //  .address("Meow Town")
                         .build(),
                 Organizer.builder()
                         .id(456L)
-                        .organizerName("Fern Pollin")
-                        .address("Flora City")
+                        .name("Fern Pollin")
+                      //  .address("Flora City")
                         .build(),
                 Organizer.builder()
                         .id(789L)
-                        .organizerName("Carey Wales")
-                        .address("Playa Del Carmen")
+                        .name("Carey Wales")
+                      //  .address("Playa Del Carmen")
                         .build(),
                 Organizer.builder()
                         .id(1001L)
-                        .organizerName("Woof Gang")
-                        .address("Doggo Ville")
+                        .name("Woof Gang")
+                       // .address("Doggo Ville")
                         .build(),
                 Organizer.builder()
                         .id(1002L)
-                        .organizerName("Agri Culture")
-                        .address("Harvest Square")
+                        .name("Agri Culture")
+                      //  .address("Harvest Square")
                         .build(),
                 Organizer.builder()
                         .id(1003L)
-                        .organizerName("Green Earth")
-                        .address("Eco Center")
+                        .name("Green Earth")
+                       // .address("Eco Center")
                         .build()
         );
     }

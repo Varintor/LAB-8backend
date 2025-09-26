@@ -1,25 +1,27 @@
 package se331.lab.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "organizer")
 public class Organizer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Exclude
     Long id;
+    String name;
 
-    @Column(name = "organizer_name")   // ✅ match DB column
-    String organizerName;
-
-    String address;
+    @OneToMany(mappedBy = "organizer")
+    @Builder.Default
+    @JsonBackReference
+    List<Event> ownEvents = new ArrayList<>();
 }
-
