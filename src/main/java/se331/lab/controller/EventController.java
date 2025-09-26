@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import se331.lab.entity.Event;
 import se331.lab.service.EventService;
+import se331.lab.util.LabMapper;
 
 @RestController   // ใช้ RestController แทน Controller (จะได้ return JSON ตรงๆ)
 @RequiredArgsConstructor
@@ -22,21 +23,14 @@ public class EventController {
             @RequestParam(value = "_page", required = false, defaultValue = "1") Integer page,
             @RequestParam(value = "title", required = false) String title,
             @RequestParam(value = "description", required = false) String description) {
-        // ตรวจสอบค่าดีฟอลต์อีกครั้งเพื่อความชัวร์
+
         perPage = (perPage == null || perPage <= 0) ? 10 : perPage;
         page = (page == null || page <= 0) ? 1 : page;
 
-
-        Page<Event> pageOutput = eventService.getEventsAnd(
-                title, description,
-                PageRequest.of(page - 1, perPage)
-        );
-
+        Page<Event> pageOutput;
         if (title == null || title.isBlank()) {
-            // ถ้าไม่ได้ส่ง title → ดึงทั้งหมด
             pageOutput = eventService.getEvents(page, perPage);
         } else {
-            // ถ้าส่ง title → ดึงเฉพาะที่ match
             pageOutput = eventService.getEvents(
                     title,
                     PageRequest.of(page - 1, perPage)
@@ -47,11 +41,12 @@ public class EventController {
         responseHeaders.set("x-total-count", String.valueOf(pageOutput.getTotalElements()));
 
         return new ResponseEntity<>(
-                pageOutput.getContent(),
+                LabMapper.INSTANCE.getEventDTOs(pageOutput.getContent()), // ✅ ใช้ Mapper แทน
                 responseHeaders,
                 HttpStatus.OK
         );
     }
+
 
     @GetMapping("/events/{id}")
     public ResponseEntity<?> getEvent(@PathVariable("id") Long id) {
