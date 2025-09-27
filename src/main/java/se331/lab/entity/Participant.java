@@ -1,5 +1,6 @@
 package se331.lab.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,5 +22,6 @@ public class Participant {
     String telNo;
 
     @ManyToMany(mappedBy = "participants")
+    @JsonBackReference
     List<Event> eventHistory;
 }

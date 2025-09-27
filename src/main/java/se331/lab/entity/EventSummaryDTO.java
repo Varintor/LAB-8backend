@@ -5,21 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class EventDTO {
+public class EventSummaryDTO {
     Long id;
-    String category;
     String title;
-    String description;
-    String location;
     String date;
     String time;
-    Boolean petsAllowed;
-    EventOrganizerDTO organizer;
-    List<ParticipantSummaryDTO> participants;
 }

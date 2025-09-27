@@ -7,8 +7,12 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 import se331.lab.entity.Event;
 import se331.lab.entity.Organizer;
+import se331.lab.entity.Participant;
 import se331.lab.repository.EventRepository;
 import se331.lab.repository.OrganizerRepository;
+import se331.lab.entity.Participant;
+import se331.lab.repository.ParticipantRepository;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -16,23 +20,27 @@ public class InitApp implements ApplicationListener<ApplicationReadyEvent> {
     final EventRepository eventRepository;
     final OrganizerRepository organizerRepository;
 
+
+
+    // เพิ่มใน @RequiredArgsConstructor ด้วย
+    final ParticipantRepository participantRepository;
+
     @Override
     @Transactional
     public void onApplicationEvent(ApplicationReadyEvent event) {
         Organizer org1, org2, org3;
 
-        // ✅ สร้าง Organizer
-        org1 = organizerRepository.save(Organizer.builder()
-                .name("CAMT")
-                .build());
+        // ✅ Organizer
+        org1 = organizerRepository.save(Organizer.builder().name("CAMT").build());
+        org2 = organizerRepository.save(Organizer.builder().name("CMU").build());
+        org3 = organizerRepository.save(Organizer.builder().name("ChiangMai").build());
 
-        org2 = organizerRepository.save(Organizer.builder()
-                .name("CMU")
-                .build());
-
-        org3 = organizerRepository.save(Organizer.builder()
-                .name("ChiangMai")
-                .build());
+        // ✅ Participant
+        Participant p1 = participantRepository.save(Participant.builder().name("Alice").telNo("1").build());
+        Participant p2 = participantRepository.save(Participant.builder().name("Bob").telNo("2").build());
+        Participant p3 = participantRepository.save(Participant.builder().name("Charlie").telNo("3").build());
+        Participant p4 = participantRepository.save(Participant.builder().name("David").telNo("4").build());
+        Participant p5 = participantRepository.save(Participant.builder().name("Emma").telNo("5").build());
 
         Event tempEvent;
 
@@ -47,6 +55,7 @@ public class InitApp implements ApplicationListener<ApplicationReadyEvent> {
                 .petsAllowed(false)
                 .build();
         tempEvent.setOrganizer(org1);
+        tempEvent.getParticipants().addAll(List.of(p1, p2, p3)); // มีอย่างน้อย 3 คน
         org1.getOwnEvents().add(tempEvent);
         eventRepository.save(tempEvent);
 
@@ -61,6 +70,7 @@ public class InitApp implements ApplicationListener<ApplicationReadyEvent> {
                 .petsAllowed(false)
                 .build();
         tempEvent.setOrganizer(org1);
+        tempEvent.getParticipants().addAll(List.of(p1, p2, p3, p4));
         org1.getOwnEvents().add(tempEvent);
         eventRepository.save(tempEvent);
 
@@ -75,6 +85,7 @@ public class InitApp implements ApplicationListener<ApplicationReadyEvent> {
                 .petsAllowed(false)
                 .build();
         tempEvent.setOrganizer(org2);
+        tempEvent.getParticipants().addAll(List.of(p1, p2, p3, p5));
         org2.getOwnEvents().add(tempEvent);
         eventRepository.save(tempEvent);
 
@@ -89,7 +100,9 @@ public class InitApp implements ApplicationListener<ApplicationReadyEvent> {
                 .petsAllowed(true)
                 .build();
         tempEvent.setOrganizer(org3);
+        tempEvent.getParticipants().addAll(List.of(p2, p3, p4));
         org3.getOwnEvents().add(tempEvent);
         eventRepository.save(tempEvent);
     }
+
 }

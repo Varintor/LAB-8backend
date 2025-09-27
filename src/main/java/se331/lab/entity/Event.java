@@ -8,6 +8,7 @@ import se331.lab.entity.Organizer;
 import se331.lab.entity.Participant;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -37,8 +38,7 @@ public class Event {
             joinColumns = @JoinColumn(name = "event_id"),
             inverseJoinColumns = @JoinColumn(name = "participant_id")
     )
-    List<Participant> participants;
-
-
+    @Builder.Default
+    List<Participant> participants = new ArrayList<>();
 }
 ///
