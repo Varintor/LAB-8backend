@@ -11,16 +11,24 @@ import java.util.List;
 public interface LabMapper {
     LabMapper INSTANCE = Mappers.getMapper(LabMapper.class);
 
+    // ---------- Event ----------
     EventDTO getEventDTO(Event event);
     List<EventDTO> getEventDTOs(List<Event> events);
 
+    // ---------- Organizer ----------
     OrganizerDTO getOrganizerDTO(Organizer organizer);
     List<OrganizerDTO> getOrganizerDTO(List<Organizer> organizers);
 
+    Organizer getOrganizer(OrganizerDTO organizerDTO);   // ✅ เพิ่ม method นี้
+
+
+    // ---------- Participant ----------
     @Mapping(target = "eventHistory", source = "eventHistory", qualifiedByName = "toEventSummaryDTOList")
     ParticipantDTO getParticipantDTO(Participant participant);
     List<ParticipantDTO> getParticipantDTOs(List<Participant> participants);
 
+
+    // ---------- EventSummary ----------
     @Named("toEventSummaryDTO")
     EventSummaryDTO toEventSummaryDTO(Event event);
 
@@ -30,3 +38,4 @@ public interface LabMapper {
         return events.stream().map(this::toEventSummaryDTO).toList();
     }
 }
+
