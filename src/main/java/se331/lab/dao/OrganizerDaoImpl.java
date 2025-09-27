@@ -9,6 +9,7 @@ import se331.lab.entity.Organizer;
 import se331.lab.repository.OrganizerRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -17,6 +18,11 @@ public class OrganizerDaoImpl implements OrganizerDao {
     @Override
     public Page<Organizer> getOrganizer(Pageable pageRequest) {
         return organizerRepository.findAll(pageRequest);
+    }
+
+    @Override
+    public Optional<Organizer> findById(Long id) {
+        return organizerRepository.findById(id);
     }
 
 

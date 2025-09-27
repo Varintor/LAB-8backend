@@ -6,7 +6,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import se331.lab.entity.Event;
+import se331.lab.entity.Organizer;
 import se331.lab.repository.EventRepository;
+
+import java.util.Optional;
 
 @Repository
 @Primary
@@ -48,4 +51,9 @@ public class EventDaoImpl implements EventDao {
         return eventRepository.findByTitleIgnoreCaseContainingOrDescriptionIgnoreCaseContainingOrOrganizer_NameIgnoreCaseContaining(
                 title, description, title, page);
     }
+
+//    @Override
+//    public Optional<Organizer> findById(Long id) {
+//        return eventRepository.findById(id);
+//    }
 }

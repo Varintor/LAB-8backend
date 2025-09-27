@@ -62,7 +62,7 @@ public class EventController {
     }
     @PostMapping("/events")
     public ResponseEntity<?> addEvent(@RequestBody Event event) {
-        // ✅ reset id ถ้า frontend ส่งมาเป็น 0
+        // ถ้า frontend ส่ง id = 0 → reset ให้ null
         if (event.getId() != null && event.getId() == 0) {
             event.setId(null);
         }

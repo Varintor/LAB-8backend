@@ -5,6 +5,8 @@ import org.springframework.data.domain.Pageable;
 import se331.lab.entity.Event;
 import se331.lab.entity.Organizer;
 
+import java.util.Optional;
+
 public interface EventDao {
     Integer getEventSize();
     Page<Event> getEvents(Integer page, Integer perPage);

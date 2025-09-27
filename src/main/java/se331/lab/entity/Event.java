@@ -29,7 +29,6 @@ public class Event {
     Boolean petsAllowed;
     @ManyToOne
     @JoinColumn(name = "organizer_id") // foreign key ไปที่ organizer
-    @JsonManagedReference
     Organizer organizer;
 
     @ManyToMany
