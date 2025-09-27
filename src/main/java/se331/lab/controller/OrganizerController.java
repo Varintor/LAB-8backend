@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import se331.lab.service.OrganizerService;
+import se331.lab.util.LabMapper;
 
 @RestController
 @RequiredArgsConstructor
@@ -13,7 +14,7 @@ public class OrganizerController {
 
     @GetMapping("/organizers")
     public ResponseEntity<?> getOrganizers() {
-        return ResponseEntity.ok(organizerService.getAllOrganizer());
+        return ResponseEntity.ok(LabMapper.INSTANCE.getOrganizerDTO(organizerService.getAllOrganizer()) );
     }
 }
 
