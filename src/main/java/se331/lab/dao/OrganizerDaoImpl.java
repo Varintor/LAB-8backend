@@ -1,72 +1,47 @@
 package se331.lab.dao;
 
 import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import se331.lab.entity.Organizer;
+import se331.lab.repository.OrganizerRepository;
 
 import java.util.List;
 
 @Repository
+@RequiredArgsConstructor
 public class OrganizerDaoImpl implements OrganizerDao {
-    List<Organizer> organizerList;
-
-    @PostConstruct
-    public void init() {
-        organizerList = List.of(
-                Organizer.builder()
-                        .id(123L)
-                        .name("Kat Laydee")
-                      //  .address("Meow Town")
-                        .build(),
-                Organizer.builder()
-                        .id(456L)
-                        .name("Fern Pollin")
-                      //  .address("Flora City")
-                        .build(),
-                Organizer.builder()
-                        .id(789L)
-                        .name("Carey Wales")
-                      //  .address("Playa Del Carmen")
-                        .build(),
-                Organizer.builder()
-                        .id(1001L)
-                        .name("Woof Gang")
-                       // .address("Doggo Ville")
-                        .build(),
-                Organizer.builder()
-                        .id(1002L)
-                        .name("Agri Culture")
-                      //  .address("Harvest Square")
-                        .build(),
-                Organizer.builder()
-                        .id(1003L)
-                        .name("Green Earth")
-                       // .address("Eco Center")
-                        .build()
-        );
-    }
-
+    final OrganizerRepository organizerRepository;
     @Override
-    public Integer getOrganizerSize() {
-        return organizerList.size();
+    public Page<Organizer> getOrganizer(Pageable pageRequest) {
+        return organizerRepository.findAll(pageRequest);
     }
 
-    @Override
-    public List<Organizer> getOrganizerList(Integer pageSize, Integer page) {
-        pageSize = pageSize == null ? organizerList.size() : pageSize;
-        page = page == null ? 1 : page;
-        int firstIndex = (page - 1) * pageSize;
-        return organizerList.subList(
-                firstIndex,
-                Math.min(firstIndex + pageSize, organizerList.size())
-        );
-    }
 
-    @Override
-    public Organizer getOrganizer(Long id) {
-        return organizerList.stream()
-                .filter(o -> o.getId().equals(id))
-                .findFirst()
-                .orElse(null);
-    }
+
+//    @Override
+//    public Integer getOrganizerSize() {
+//        return organizerList.size();
+//    }
+//
+//    @Override
+//    public List<Organizer> getOrganizerList(Integer pageSize, Integer page) {
+//        pageSize = pageSize == null ? organizerList.size() : pageSize;
+//        page = page == null ? 1 : page;
+//        int firstIndex = (page - 1) * pageSize;
+//        return organizerList.subList(
+//                firstIndex,
+//                Math.min(firstIndex + pageSize, organizerList.size())
+//        );
+//    }
+//
+//    @Override
+//    public Organizer getOrganizer(Long id) {
+//        return organizerList.stream()
+//                .filter(o -> o.getId().equals(id))
+//                .findFirst()
+//                .orElse(null);
+//    }
 }

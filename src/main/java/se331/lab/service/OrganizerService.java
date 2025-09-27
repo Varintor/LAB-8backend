@@ -5,9 +5,10 @@ import se331.lab.entity.Organizer;
 import java.util.List;
 
 public interface OrganizerService {
-    Integer getOrganizerSize();
-    Page<Organizer> getOrganizers(Integer pageSize, Integer page);  // แก้ตรงนี้
-    Organizer getOrganizer(Long id);
-    Organizer save(Organizer organizer);
+//    Integer getOrganizerSize();
+//    Organizer save(Organizer organizer);
+//    List<Organizer> getAllOrganizers();
+    Page<Organizer> getOrganizer(Integer pageSize ,Integer page);
+    List<Organizer> getAllOrganizer();
 }
 
