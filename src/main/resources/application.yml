@@ -14,3 +14,15 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: create
+  servlet:
+    multipart:
+      max-file-size: 10MB
+supabase:
+  storage:
+    endpoint: https://mjvbltnlxorquzlbpyse.storage.supabase.co/storage/v1/s3
+    endpoint_output: https://mjvbltnlxorquzlbpyse.supabase.co/storage/v1/object/public
+    bucket: test
+    region: ap-southeast-1
+    accessKey: 4b10dffe334380d48fb4852a902c064f
+    secretKey: c9a8134de11b843f1ebb38ef365cdf6d8eabe7e49e7ea9ea20f85a998271c328
+
