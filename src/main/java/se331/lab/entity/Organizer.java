@@ -24,4 +24,8 @@ public class Organizer {
     @Builder.Default
     @JsonBackReference
     List<Event> ownEvents = new ArrayList<>();
+    @ElementCollection
+    @CollectionTable(name = "organizer_images", joinColumns = @JoinColumn(name = "organizer_id"))
+    @Column(name = "image_url")
+    List<String> images = new ArrayList<>();
 }

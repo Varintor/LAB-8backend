@@ -16,10 +16,14 @@ public interface LabMapper {
     List<EventDTO> getEventDTOs(List<Event> events);
 
     // ---------- Organizer ----------
+    @Mapping(source = "images", target = "images")  // ✅ บังคับ mapping ตรงนี้
+    @Mapping(source = "ownEvents", target = "ownEvents")
     OrganizerDTO getOrganizerDTO(Organizer organizer);
+
     List<OrganizerDTO> getOrganizerDTO(List<Organizer> organizers);
 
-    Organizer getOrganizer(OrganizerDTO organizerDTO);   // ✅ เพิ่ม method นี้
+    Organizer getOrganizer(OrganizerDTO organizerDTO); // ✅ บังคับให้ใช้ตรงกัน
+
 
 
     // ---------- Participant ----------

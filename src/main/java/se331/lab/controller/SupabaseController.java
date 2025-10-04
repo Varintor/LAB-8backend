@@ -9,6 +9,9 @@ import org.springframework.web.multipart.MultipartFile;
 import se331.lab.util.StorageFileDto;
 import se331.lab.util.SupabaseStorageService;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Controller
 @RequiredArgsConstructor
 public class SupabaseController {
@@ -16,14 +19,18 @@ public class SupabaseController {
     final SupabaseStorageService supabaseStorageService;
 
     @PostMapping("/uploadFile")
-    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Map<String, String>> uploadFile(@RequestParam("file") MultipartFile file) {
         try {
             String url = supabaseStorageService.uploadFile(file);
-            return ResponseEntity.ok(url);
+            Map<String, String> response = new HashMap<>();
+            response.put("name", file.getOriginalFilename());
+            response.put("url", url);
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error uploading file: " + e.getMessage());
+            return ResponseEntity.status(500).body(Map.of("error", e.getMessage()));
         }
     }
+
 
     @PostMapping("/uploadImage")
     public ResponseEntity<?> uploadImage(@RequestParam("image") MultipartFile file) {

@@ -15,16 +15,27 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class OrganizerDaoImpl implements OrganizerDao {
     final OrganizerRepository organizerRepository;
-    @Override
-    public Page<Organizer> getOrganizer(Pageable pageRequest) {
-        return organizerRepository.findAll(pageRequest);
-    }
 
     @Override
     public Optional<Organizer> findById(Long id) {
         return organizerRepository.findById(id);
     }
 
+    @Override
+    public Page<Organizer> getOrganizers(Pageable pageable) {
+        return organizerRepository.findAll(pageable);
+    }
+
+    @Override
+    public Organizer getOrganizer(Long id) {
+        return organizerRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Organizer save(Organizer organizer) {
+        return organizerRepository.save(organizer);
+    }
+}
 
 
 //    @Override
@@ -50,4 +61,4 @@ public class OrganizerDaoImpl implements OrganizerDao {
 //                .findFirst()
 //                .orElse(null);
 //    }
-}
+
