@@ -52,7 +52,7 @@ public class EventController {
     public ResponseEntity<?> getEvent(@PathVariable("id") Long id) {
         Event output = eventService.getEvent(id);
         if (output != null) {
-            return ResponseEntity.ok(output);
+            return ResponseEntity.ok(LabMapper.INSTANCE.getEventDTO(output));
         } else {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
@@ -68,7 +68,7 @@ public class EventController {
         }
 
         Event output = eventService.save(event);
-        return ResponseEntity.ok(output);
+        return ResponseEntity.ok(LabMapper.INSTANCE.getEventDTO(output));
     }
 
 }
