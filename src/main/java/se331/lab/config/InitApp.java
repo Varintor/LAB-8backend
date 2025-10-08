@@ -105,11 +105,13 @@ public class InitApp implements ApplicationListener<ApplicationReadyEvent> {
         tempEvent.getParticipants().addAll(List.of(p2, p3, p4));
         org3.getOwnEvents().add(tempEvent);
         eventRepository.save(tempEvent);
-        addUser();
+
+        // ✅ เพิ่มผู้ใช้และเชื่อมกับ organizer
+        addUser(org1, org2, org3);
     }
 
-    // ✅ เพิ่มผู้ใช้ admin, user, disableUser
-    private void addUser() {
+    // ✅ เพิ่มผู้ใช้และเชื่อมกับ organizer
+    private void addUser(Organizer org1, Organizer org2, Organizer org3) {
         PasswordEncoder encoder = new BCryptPasswordEncoder();
 
         User user1 = User.builder()
@@ -139,15 +141,27 @@ public class InitApp implements ApplicationListener<ApplicationReadyEvent> {
                 .enabled(false)
                 .build();
 
-        // ✅ กำหนด Roles
+        // ✅ Roles
         user1.getRoles().add(Role.ROLE_USER);
         user1.getRoles().add(Role.ROLE_ADMIN);
         user2.getRoles().add(Role.ROLE_USER);
         user3.getRoles().add(Role.ROLE_USER);
 
-        // ✅ Save ลง DB
+        // ✅ เชื่อม User ↔ Organizer
+        org1.setUser(user1);
+        user1.setOrganizer(org1);
+
+        org2.setUser(user2);
+        user2.setOrganizer(org2);
+
+        org3.setUser(user3);
+        user3.setOrganizer(org3);
+
+        // ✅ Save ทั้งหมด
         userRepository.save(user1);
         userRepository.save(user2);
         userRepository.save(user3);
+
+        organizerRepository.saveAll(List.of(org1, org2, org3));
     }
 }

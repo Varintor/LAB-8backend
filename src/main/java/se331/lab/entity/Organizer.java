@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import se331.lab.security.user.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,4 +29,7 @@ public class Organizer {
     @CollectionTable(name = "organizer_images", joinColumns = @JoinColumn(name = "organizer_id"))
     @Column(name = "image_url")
     List<String> images = new ArrayList<>();
+
+    @OneToOne
+    User user;
 }
