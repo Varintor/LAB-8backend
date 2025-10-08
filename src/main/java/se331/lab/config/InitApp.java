@@ -4,14 +4,19 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import se331.lab.entity.Event;
 import se331.lab.entity.Organizer;
 import se331.lab.entity.Participant;
 import se331.lab.repository.EventRepository;
 import se331.lab.repository.OrganizerRepository;
-import se331.lab.entity.Participant;
 import se331.lab.repository.ParticipantRepository;
+import se331.lab.security.user.User;
+import se331.lab.security.user.UserRepository;
+import se331.lab.security.user.Role;
+
 import java.util.List;
 
 @Component
@@ -19,10 +24,7 @@ import java.util.List;
 public class InitApp implements ApplicationListener<ApplicationReadyEvent> {
     final EventRepository eventRepository;
     final OrganizerRepository organizerRepository;
-
-
-
-    // เพิ่มใน @RequiredArgsConstructor ด้วย
+    final UserRepository userRepository;
     final ParticipantRepository participantRepository;
 
     @Override
@@ -55,7 +57,7 @@ public class InitApp implements ApplicationListener<ApplicationReadyEvent> {
                 .petsAllowed(false)
                 .build();
         tempEvent.setOrganizer(org1);
-        tempEvent.getParticipants().addAll(List.of(p1, p2, p3)); // มีอย่างน้อย 3 คน
+        tempEvent.getParticipants().addAll(List.of(p1, p2, p3));
         org1.getOwnEvents().add(tempEvent);
         eventRepository.save(tempEvent);
 
@@ -103,6 +105,49 @@ public class InitApp implements ApplicationListener<ApplicationReadyEvent> {
         tempEvent.getParticipants().addAll(List.of(p2, p3, p4));
         org3.getOwnEvents().add(tempEvent);
         eventRepository.save(tempEvent);
+        addUser();
     }
 
+    // ✅ เพิ่มผู้ใช้ admin, user, disableUser
+    private void addUser() {
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+
+        User user1 = User.builder()
+                .username("admin")
+                .password(encoder.encode("admin"))
+                .firstname("admin")
+                .lastname("admin")
+                .email("admin@admin.com")
+                .enabled(true)
+                .build();
+
+        User user2 = User.builder()
+                .username("user")
+                .password(encoder.encode("user"))
+                .firstname("user")
+                .lastname("user")
+                .email("enabled@user.com")
+                .enabled(true)
+                .build();
+
+        User user3 = User.builder()
+                .username("disableUser")
+                .password(encoder.encode("disableUser"))
+                .firstname("disableUser")
+                .lastname("disableUser")
+                .email("disableUser@user.com")
+                .enabled(false)
+                .build();
+
+        // ✅ กำหนด Roles
+        user1.getRoles().add(Role.ROLE_USER);
+        user1.getRoles().add(Role.ROLE_ADMIN);
+        user2.getRoles().add(Role.ROLE_USER);
+        user3.getRoles().add(Role.ROLE_USER);
+
+        // ✅ Save ลง DB
+        userRepository.save(user1);
+        userRepository.save(user2);
+        userRepository.save(user3);
+    }
 }

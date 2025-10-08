@@ -13,19 +13,4 @@ public class Application {
 		SpringApplication.run(Application.class, args);
 	}
 
-	// ✅ เพิ่มตรงนี้
-	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurer() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**") // อนุญาตทุก endpoint
-						.allowedOrigins("http://localhost:5173") // อนุญาตเฉพาะจาก Frontend ของเรา
-						.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // อนุญาตทุก Method
-						.allowedHeaders("*") // อนุญาตทุก Header
-						.exposedHeaders("x-total-count")  // 👈 ต้องเพิ่มบรรทัดนี้
-						.allowCredentials(true); // อนุญาตการส่งข้อมูลรับรอง (ถ้ามี)
-			}
-		};
-	}
 }
