@@ -23,8 +23,8 @@ public interface LabMapper {
     List<OrganizerDTO> getOrganizerDTO(List<Organizer> organizers);
 
     Organizer getOrganizer(OrganizerDTO organizerDTO); // ✅ บังคับให้ใช้ตรงกัน
-
-
+    @Mapping(target = "roles", source ="user.roles")
+    OrganizerAuthDTO getOrganizerAuthDTO(Organizer organizer);
 
     // ---------- Participant ----------
     @Mapping(target = "eventHistory", source = "eventHistory", qualifiedByName = "toEventSummaryDTOList")
